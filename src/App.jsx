@@ -11,27 +11,27 @@ const App = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const fetchMeme = async () => {
-    let subreddits = ["programminghumor", "wholesomememes"];
+    let subreddits = ["programmerhumor", "wholesomememes"];
     let base_url = "https://meme-api.com/gimme/";
 
     let random_subreddit =
       subreddits[Math.floor(Math.random() * subreddits.length)];
-      try{
-    const response = await fetch(base_url + random_subreddit);
-    if (response.status === 200) {
+    try {
+      const response = await fetch(base_url + random_subreddit);
+      if (response.status === 200) {
+        setIsSuccess(true);
+      } else {
+        setIsSuccess(false);
+      }
+      const data = await response.json();
+      setMeme({
+        author: data.author,
+        title: data.title,
+        imgUrl: data.url,
+        postLink: data.postLink,
+      });
       setIsSuccess(true);
-    } else {
-      setIsSuccess(false);
-    }
-    const data = await response.json();
-    setMeme({
-      author: data.author,
-      title: data.title,
-      imgUrl: data.url,
-      postLink: data.postLink,
-    })
-    setIsSuccess(true);
-  }catch(e){
+    } catch (e) {
       console.log(e);
       setIsSuccess(false);
     }
@@ -50,12 +50,8 @@ const App = () => {
       <p>
         Post Link: <a href={meme.postLink}>{meme.postLink}</a>
       </p>
-      <button onClick={fetchMeme}>
-        Next meme
-      </button>
-      {isSuccess ? (
-        ""
-      ) : (
+      <button onClick={fetchMeme}>Next meme</button>
+      {!isSuccess && (
         <p>Error while loading the meme. Try checking your connection</p>
       )}
     </div>
