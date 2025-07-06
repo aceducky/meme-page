@@ -69,7 +69,7 @@ const App = () => {
       </div>
       <p>Author: {meme.author}</p>
       <p>
-        Post Link: <a href={meme.postLink}>{meme.postLink}</a>
+        Post Link: <a href={meme.postLink} target="_blank" rel="noopener noreferrer">{meme.postLink}</a>
       </p>
       <button
         style={{
