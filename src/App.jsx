@@ -51,6 +51,12 @@ const App = () => {
     }
   };
 
+  const getStatusMessage = () => {
+    if (isLoading) return "Loading...";
+    if (!imageLoaded) return "Loading Image...";
+    return "Next meme";
+  };
+
   useEffect(() => {
     fetchMeme();
   }, []);
@@ -61,7 +67,7 @@ const App = () => {
       <div id="img-container">
         <img
           onLoad={() => setImageLoaded(true)}
-          onError={() => setImageLoadingFailed(true)}
+          onError={() => !isLoading && setImageLoadingFailed(true)}
           src={meme.imgUrl}
           alt={meme.title}
         />
@@ -69,7 +75,10 @@ const App = () => {
       </div>
       <p>Author: {meme.author}</p>
       <p>
-        Post Link: <a href={meme.postLink} target="_blank" rel="noopener noreferrer">{meme.postLink}</a>
+        Post Link:{" "}
+        <a href={meme.postLink} target="_blank" rel="noopener noreferrer">
+          {meme.postLink}
+        </a>
       </p>
       <button
         style={{
@@ -77,10 +86,10 @@ const App = () => {
         }}
         onClick={fetchMeme}
       >
-        {/* let's not disable the button, its not fun here */}
-        {isLoading || !imageLoaded ? "Loading..." : "Next meme"}
+        {/* let's not disable the button*/}
+        {getStatusMessage()}
       </button>
-      {!isSuccess && (
+      {!isLoading && !isSuccess && (
         <p>Error while loading the meme. Try checking your connection</p>
       )}
     </div>
